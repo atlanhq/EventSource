@@ -584,7 +584,8 @@
     withCredentials,
     method,
     headers,
-    body
+    body,
+    initialWaitTimeout
   ) {
     var reader = null;
     var controller = new AbortController();
@@ -597,7 +598,7 @@
         method: method,
         headers: headers,
         credentials: withCredentials ? "include" : "same-origin",
-        signal: signal,
+        signal:AbortSignal.timeout(initialWaitTimeout),
         cache: "no-store",
         body: body
       }
@@ -781,6 +782,7 @@
 
   var MINIMUM_DURATION = 1000;
   var MAXIMUM_DURATION = 18000000;
+  var INITIAL_WAIT_TIMEOUT_DURATION = 1000*60*5;
 
   var parseDuration = function (value, def) {
     var n = value == null ? def : parseInt(value, 10);
@@ -1104,6 +1106,7 @@
           method,
           requestHeaders,
           JSON.stringify(options.body),
+          options?.initialWaitTimeout||INITIAL_WAIT_TIMEOUT_DURATION
         );
       } catch (error) {
         close();
