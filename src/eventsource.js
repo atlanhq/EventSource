@@ -782,7 +782,7 @@
 
   var MINIMUM_DURATION = 1000;
   var MAXIMUM_DURATION = 18000000;
-  var INITIAL_WAIT_TIMEOUT_DURATION = 1000*60*5;
+  var INITIAL_WAIT_TIMEOUT_DURATION = 1000*60*10;
 
   var parseDuration = function (value, def) {
     var n = value == null ? def : parseInt(value, 10);
@@ -1106,7 +1106,7 @@
           method,
           requestHeaders,
           JSON.stringify(options.body),
-          options?.initialWaitTimeout||INITIAL_WAIT_TIMEOUT_DURATION
+          options?.heartbeatTimeout||INITIAL_WAIT_TIMEOUT_DURATION
         );
       } catch (error) {
         close();
