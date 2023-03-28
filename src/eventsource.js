@@ -1106,7 +1106,7 @@
           method,
           requestHeaders,
           JSON.stringify(options.body),
-          options?.heartbeatTimeout||INITIAL_WAIT_TIMEOUT_DURATION
+          heartbeatTimeout||INITIAL_WAIT_TIMEOUT_DURATION
         );
       } catch (error) {
         close();
