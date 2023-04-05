@@ -592,13 +592,19 @@
     var signal = controller.signal;
     var textDecoder = new TextDecoder();
 
+    if (AbortSignal.timeout) {
+      signal = AbortSignal.timeout?.(initialWaitTimeout)
+    } else {
+      setTimeout(() => controller.abort(), initialWaitTimeout)
+    }
+
     fetch(
       url,
       {
         method: method,
         headers: headers,
         credentials: withCredentials ? "include" : "same-origin",
-        signal:AbortSignal.timeout(initialWaitTimeout),
+        signal: signal,
         cache: "no-store",
         body: body
       }
