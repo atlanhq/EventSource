@@ -592,11 +592,6 @@
     var signal = controller.signal;
     var textDecoder = new TextDecoder();
 
-    if (AbortSignal.timeout) {
-      signal = AbortSignal.timeout?.(initialWaitTimeout)
-    } else {
-      setTimeout(() => controller.abort(), initialWaitTimeout)
-    }
 
     fetch(
       url,
@@ -1051,16 +1046,13 @@
       timeout = 0;
 
       if (currentState !== WAITING) {
-        if (!wasActivity && abortController !== undefined) {
-          onFinish(new Error("No activity within " + heartbeatTimeout + " milliseconds. Reconnecting."));
-          abortController.abort();
+        
+          onFinish(new Error('TIMEOUT_ERROR'));
+          if(abortController?.abort){
+            abortController.abort();
+          }
           abortController = undefined;
-        } else {
-          wasActivity = false;
-          timeout = setTimeout(function () {
-            onTimeout();
-          }, heartbeatTimeout);
-        }
+       
         return;
       }
 
